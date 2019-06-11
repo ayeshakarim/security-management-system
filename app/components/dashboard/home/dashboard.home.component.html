@@ -1,0 +1,111 @@
+<div class="text-muted" style="text-align: end; margin: -10px 0px">
+        <span> next update scheduled for: 03/02/2019 3.45am</span>
+</div>
+<h1 class="page-title">Overview</h1> 
+<div class="row grid-margin">
+    <div class="col-12 col-lg-6 grid-margin grid-margin-lg-0">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title"> Create New</h2>
+                <div class="row">
+                    <div class="col-12" >
+                            <div class="form-group">
+                                <div class="form-row" style="margin-top: 40px">
+                                    <div class="col-4" style="margin-left: 50px">
+                                            <a [routerLink]="['/issues/create']" class="btn btn-success">
+                                            <i class="fa fa-clipboard" style="margin-right: 10px"></i>
+                                            New Issue
+                                        </a>
+                                    </div>
+                                    <div class="col-4" style="margin-left: 50px">
+                                            <a [routerLink]="['/offenses/create']" class="btn btn-success">
+                                            <i class="fa fa-exclamation-triangle" style="margin-right: 10px"></i>
+                                            New Offense
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-top: 30px; margin-bottom: 40px">
+                                    <div class="col-4" style="margin-left: 50px">
+                                            <a [routerLink]="['/users/create']" class="btn btn-success">
+                                        <i class="fa fa-user-circle" style="margin: 0px 10px 0px 5px"></i>
+                                        New User
+                                    </a>
+                                    </div>
+                                    <div class="col-4" style="margin-left: 50px">
+                                            <a [routerLink]="['/penalties/create']" class="btn btn-success">
+                                        <i class="fa fa-money" style="margin-right: 10px"></i>
+                                        New Penalty
+                                    </a>
+                                    </div>
+                            </div>        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="row grid-margin">
+            <div class="col-6">
+                <div class="card card-statistics" [routerLink]="['/users']" style="cursor: pointer;">
+                    <i class="fa fa-lock text-success" style="font-size: 1.5rem; padding: 20px 0px 0px 20px;"></i>
+                    <div class="card-body" style=" text-align: end; margin-top: -50px">
+                            <p class="highlight-text" style=" font-weight: bolder; font-size: 20px">
+                                {{numAccountsDisabled}}
+                            </p>
+                        <p class="text-muted">
+                            Accounts Disabled
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card card-statistics" [routerLink]="['/issues']" style="cursor: pointer;">
+                    <i class="fa fa-exclamation-circle text-info" style="font-size: 1.5rem; padding: 20px 0px 0px 20px;"></i>
+                    <div class="card-body" style=" text-align: end; margin-top: -50px">
+                            <p class="highlight-text" style=" font-weight: bolder; font-size: 20px">
+                                {{numReports}}
+                        </p>
+                        <p class="text-muted">
+                            New Reports
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="card card-statistics" [routerLink]="['/users']" style="cursor: pointer;">
+                    <i class="fa fa-hourglass text-danger" style="font-size: 1.25rem; padding: 20px 0px 0px 20px;"></i>
+                    <div class="card-body" style=" text-align: end; margin-top: -45px;">
+                            <p class="highlight-text" style=" font-weight: bolder; font-size: 20px">
+                            {{numAccountsApproval}}
+                        </p>
+                        <p class="text-muted">
+                           Approval Pending
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card card-statistics" [routerLink]="['/users']" style="cursor: pointer;">
+                    <i class="fa fa-money text-warning" style="font-size: 1.5rem; padding: 20px 0px 0px 20px;"></i>
+                    <div class="card-body" style=" text-align: end; margin-top: -50px">
+                            <p class="highlight-text" style=" font-weight: bolder; font-size: 20px">
+                                {{numAccountsFinancial}}
+                        </p>
+                        <p class="text-muted">
+                            Financially Restricted Accounts
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row grid-margin">
+    <div class="col-12 col-lg-5 grid-margin grid-margin-lg-0">
+    </div>
+    <div class="col-12 col-lg-7">
+    </div>
+</div>

@@ -1,0 +1,204 @@
+<h1 class="page-title" >
+    {{ (!id) ? 'New User' : 'Edit User' }}
+<div class="row grid-margin">
+    <div class="col-lg-12">
+    	<div class="btn-group float-right">
+    		<a class="btn btn-success" [routerLink]="['/users']">
+                <i class="fa fa-chevron-circle-left"></i> Go Back
+            </a>
+    	</div>
+    </div>
+</div>
+</h1>
+<hr>
+<div class="row grid-margin">
+    <div class="col-lg-12 grid-margin grid-margin-lg-0">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Fill the following fields</h2>
+                <div class="alert alert-danger" role="alert" *ngIf="user$.error">
+                    <h4 class="alert-heading">Error has occurred!</h4>
+                    <div *ngFor="let error of user$.error.errors">
+                        {{ error.message }}
+                    </div>
+                </div>
+                <div *ngIf="id">
+                    <div class="alert alert-danger" role="alert" *ngIf="form.isDisabled">
+                        <h4 class="alert-heading" style="display: inline-block;">Account Disabled!</h4>
+                        <button (click)="disableAccount(false,'oEBSAXGbRCJMISjoDM3x')" class="btn btn btn-danger" style="float: right;">Activate Account</button>
+                    </div>
+
+                    <div class="alert alert-success" role="alert" *ngIf="!form.isDisabled">
+                        <h4 class="alert-heading" style="display: inline-block;" >Account Active!</h4> 
+                        <button (click)="disableAccount(true,'ZEZESTN8GEP0LMtp3KX8')" class="btn btn-success" style="float: right;">Disable Account</button>
+                    </div>
+                </div>
+
+
+                <form class="forms-sample" (ngSubmit)="onSubmit($event)" [ngClass]="{'d-none': user$.isLoading == true}">
+                    <div class="form-group text-center" *ngIf="user$.isLoading == true">
+                        <loading-spinner></loading-spinner>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="first_name">First name *</label>
+                            <input  required [ngModelOptions]="{standalone: true}" [(ngModel)]="form.first_name" class="form-control" id="first_name"  placeholder="First name" autocomplete="off">
+                        </div>
+                        <div class="form-group col">
+                            <label for="last_name">Last name *</label>
+                            <input  required [ngModelOptions]="{standalone: true}" [(ngModel)]="form.last_name" class="form-control" id="last_name" placeholder="Last name" autocomplete="off">
+                        </div>
+                    </div>
+                    <!-- <div class="form-row">
+                        <div class="form-group col">
+                            <label for="city">City *</label>
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.city" class="form-control" id="city" placeholder="City" autocomplete="off">
+                        </div>
+                        <div class="form-group col">
+                            <label for="country">Country *</label>
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.country" class="form-control" id="country" placeholder="Country" autocomplete="off">
+                        </div>
+                    </div> -->
+                    <div class="form-row">
+                            <div class="form-group col">
+                                <label for="type">Account Type*</label>
+                                <select [ngModelOptions]="{standalone: true}" [(ngModel)]="form.account_type" class="form-control" id="type" >
+                                        <option *ngFor="let a of account" [ngValue]="a">{{ a }}</option>
+                                    </select>
+                            </div>
+                            <div class="form-group col">
+                                <label for="email">Email *</label>
+                                <div class="form-row">
+                                        <div class="col-8">
+                                                <input required [ngModelOptions]="{standalone: true}" [(ngModel)]="form.email" class="form-control" id="email" placeholder="Email" autocomplete="off">
+                                            </div>
+                                        <div class="col-4">
+                                                <a href="mailto:{{ form.email }}" class="btn btn-success">
+                                                    <i class="fa fa-envelope"></i>
+                                                    New Email
+                                                </a>
+                                        </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="form-row">
+                            <div class="form-group col">
+                                <label for="transactions">Number of Transactions</label>
+                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.transactions" type="number" class="form-control" id="transactions" placeholder="103" autocomplete="off">
+                            </div>
+                            <div class="form-group col">
+                                <label for="issues">Number of Issues</label>
+                                <div class="form-row">
+                                        <div class="col-8">
+                                                <input [ngModelOptions]="{standalone: true}" [(ngModel)]="issues.length" class="form-control" placeholder="33" autocomplete="off">
+                                        </div>
+                                        <div class="col-4">
+                                                <a [routerLink]="['/issues/create']" class="btn btn-success">
+                                                    <i class="fa fa-plus-circle"></i>
+                                                    Add an Issue
+                                                </a>
+                                        </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                                <label for="penalty">Active Penalty</label>
+                                    <select  [ngModelOptions]="{standalone: true}" [(ngModel)]="form.penalty" class="form-control" >
+                                            <option *ngFor="let type of availablePenalties" [ngValue]="type.id">{{ type.string }}</option>
+                                    </select>
+                        </div>
+                        <div class="form-group col">
+                                <label class="form-check-label" for="confirmed" style="margin: end; margin: 35px 0px 0px 0px">
+                                    <input class="form-check-input" type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="form.isClosed" id="confirmed" >
+                                    Penalty Approved
+                                </label>
+                            </div>
+                    </div>
+                    <hr>
+                    <div *ngIf="id">
+                        <h3>Offense Information</h3>
+                        <table class="table table-hover table-responsive-sm table-sm">
+                            <thead class="thead-light">
+                                <tr class="">
+                                        <th></th>
+                                        <th>Offense</th>
+                                        <th sortColumn sortKey="'severity'" data="issues">Severity</th>
+                                        <th>Created at</th>
+                                        <th width=10%>Status</th>
+                                        <th width="5%">Edit</th>
+                                        <th></th>
+                                </tr>
+                            </thead>
+                                    <tbody>
+                                        <tr *ngFor="let issue of issues">
+                                            <td></td>
+                                            <td>
+                                                {{issue.offense_id}}
+                                            </td>
+                                            <td> 
+                                                {{issue.severity}}
+                                            </td>
+                                            <td>
+                                                {{ issue.updated_at.toDate() | date: 'dd/MM/yyyy' }}<br>
+                                                <small>{{ issue.updated_at.toDate() | date: 'mediumTime' }}</small>                                
+                                            </td>
+                                            <td>
+                                                {{ (issue.isClosed) ? 'closed' : 'open' }}
+                                            </td>
+                                            <td>
+                                                <a [routerLink]="['/issues/edit', issue.id]" title="Edit Issue" class="btn">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                            </table>
+                        <hr>
+                        <h3 style="display: inline-block;"> Penalties History </h3>
+                        <small> (lastest first)</small>
+                        <table class="table table-hover table-responsive-sm table-sm">
+                            <thead class="thead-light">
+                                <tr class="">
+                                        <th></th>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th width="10%" >Delete from history</th>
+                                        <th></th>
+                                </tr>
+                            </thead>
+                                    <tbody>
+                                        <tr *ngFor="let penalty of p_penalties">
+                                            <td></td>
+                                            <td>
+                                                {{penalty.id}}
+                                            </td>
+                                            <td>
+                                                {{penalty.name}}
+                                            </td>
+                                            <td>
+                                                <a (click)="popPenaltyHistory(penalty.id)" title="Delete From History" class="btn" style="margin-left: 40px" >
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
+                                            <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                            <label for="comments">Comments</label>
+                            <textarea [ngModelOptions]="{standalone: true}" [(ngModel)]="form.comment" class="form-control" id="comments" placeholder="Comments" autocomplete="off"></textarea>
+                        </div>
+                    <hr>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a [routerLink]="['/users']" class="btn btn-light">
+                        Cancel
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

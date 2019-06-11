@@ -1,0 +1,67 @@
+<h1 class="page-title">Penalties List</h1>
+<hr>
+<div class="row grid-margin">
+    <div class="col">
+        <form>
+            <input #search (keyup)="0" class="form-control" type="text" placeholder="Search">
+        </form>
+    </div>
+    <div class="col">
+    	<div class="btn-group float-right">
+    		<a class="btn btn-success" [routerLink]="['create']">
+                <i class="fa fa-plus-circle"></i> New Penalty
+            </a>
+    	</div>
+    </div>
+</div>
+<div class="row grid-margin">
+    <div class="col-lg-12 grid-margin grid-margin-lg-0">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Penalties</h2>
+                <table class="table table-hover table-responsive-sm">
+                    <thead class="thead-light">
+                        <tr class="">
+                                <th>Category</th>
+                                <th>Name</th>
+                                <th width="15%">Last Updated</th>
+                                <th width="1%">View/Edit</th>
+                                <th width="1%">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="penalties$.isLoading == true">
+                        <tr>
+                            <th colspan="6" class="text-center">
+                                <loading-spinner></loading-spinner>
+                            </th>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="penalties$.data.length > 0 && penalties$.isLoading == false">
+                        <tr *ngFor="let penalty of penalties$.data | searchFilter: search.value">
+                            <td class="capitalized-text">
+                                {{penalty.category}}
+                            </td>
+                            <td class="capitalized-text">
+                                {{penalty.name}}
+                            </td>
+                            <td>
+                                {{ penalty.updated_at.toDate() | date: 'dd/MM/yyyy' }}<br>
+                                <small>{{ penalty.updated_at.toDate() | date: 'mediumTime' }}</small>
+                            </td>
+                            <td>
+                                <a [routerLink]="['edit', penalty.id]" title="Edit" class="btn">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a title="Delete" class="btn" (click)="deletePenalty(penalty.id)">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>                            
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

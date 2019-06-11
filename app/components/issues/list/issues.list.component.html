@@ -1,0 +1,76 @@
+<h1 class="page-title">Issues List</h1>
+<hr>
+<div class="row grid-margin">
+    <div class="col">
+        <form>
+            <input #search (keyup)="0" class="form-control" type="text" placeholder="Search">
+        </form>
+    </div>
+    <div class="col">
+    	<div class="btn-group float-right">
+    		<a class="btn btn-success" [routerLink]="['create']">
+                <i class="fa fa-plus-circle"></i>  New Issue
+            </a>
+    	</div>
+    </div>
+</div>
+<div class="row grid-margin">
+    <div class="col-lg-12 grid-margin grid-margin-lg-0">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Issues</h2>
+                <table class="table table-hover table-responsive-sm">
+                    <thead class="thead-light">
+                        <tr class="">
+                            <th>User</th>
+                            <th>Offense</th>
+                            <th>Severity</th>
+                            <th>Created at</th>
+                            <th width=2%>Status</th>
+                            <th width="1%">Edit</th>
+                            <th width="1%">Delete</th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="issues$.isLoading == true">
+                        <tr>
+                            <th colspan="6" class="text-center">
+                                <loading-spinner></loading-spinner>
+                            </th>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="issues$.data.length > 0 && issues$.isLoading == false">
+                        <tr *ngFor="let issue of issues$.data | searchFilter: search.value">
+                            <td>
+                                {{issue.user}}
+                            </td>
+                            <td>
+                                {{issue.offense_id}}
+                            </td>
+                            <td> 
+                                {{issue.severity}}
+                            </td>
+                            <td>
+                                {{ issue.updated_at.toDate() | date: 'dd/MM/yyyy' }}<br>
+                                <small>{{ issue.updated_at.toDate() | date: 'mediumTime' }}</small>                                
+                            </td>
+                            <td>
+                                {{ (issue.isClosed) ? 'closed' : 'open' }}
+                            </td>
+                            <td>
+                                <a [routerLink]="['edit', issue.id]" title="Edit Issue" class="btn">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                            </td>
+                            <td>
+                                    <a  title="Delete" class="btn">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

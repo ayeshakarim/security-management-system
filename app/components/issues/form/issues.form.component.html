@@ -1,0 +1,104 @@
+<h1 class="page-title">
+    {{ (!id) ? 'New Issue' : 'Edit Issue' }}
+    <div class="row grid-margin">
+        <div class="col-lg-12">
+            <div class="btn-group float-right">
+                <a class="btn btn-success" [routerLink]="['/issues']">
+                    <i class="fa fa-chevron-circle-left"></i> Go Back
+                </a>
+            </div>
+        </div>
+    </div>
+</h1>
+<hr>
+<div class="row grid-margin">
+    <div class="col-lg-12 grid-margin grid-margin-lg-0">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Fill the following fields</h2>
+                <div class="alert alert-danger" role="alert" *ngIf="issue$.error">
+                    <h4 class="alert-heading">Something went wrong!</h4>
+                    <div *ngFor="let error of issue$.error.errors">
+                        {{ error.message }}
+                    </div>
+                </div>
+                <form class="forms-sample" (ngSubmit)="onSubmit($event)" [ngClass]="{'d-none': issue$.isLoading == true}">
+                    <div class="form-group text-center" *ngIf="issue$.isLoading == true">
+                        <loading-spinner></loading-spinner>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="update">Issue Date </label>
+                            <input readonly matInput ngModel [ngModelOptions]="{standalone: true}" [ngModel]="form.updated_at | date:'EEE, dd MMMM yyyy'"  id="update" autocomplete="off" class="form-control">
+                        </div>
+                        <div class="form-group col">
+                            <label for="reporter">Reported By *</label>
+                            <input required matInput [formControl]="reporterControl" [matAutocomplete]="auto" type="text" class="form-control" id="reporter"  placeholder="user@example.com" autocomplete="off">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let option of reporterFiltered | async" [value]="option">
+                                        {{ option.name }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="user">User's Email Address *</label>
+                        <div class="form-row">
+                            <div class="col-8">
+                                <input required matInput [formControl]="userControl" [matAutocomplete]="auto" type="text" class="form-control" id="user"  placeholder="user@example.com" autocomplete="off">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let option of userFiltered | async" [value]="option">
+                                        {{ option.name }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </div>
+                            <div class="col-4">
+                                <a [routerLink]="['/users']" class="btn btn-success">
+                                    Check Users
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="offense">Offense *</label>
+                        <div class="form-row">
+                            <div class="col-8">
+                                <select required ngModel [ngModelOptions]="{standalone: true}" [(ngModel)]="form.offense_id" class="form-control" (change)="getPenalty(form.offense_id)">
+                                    <option *ngFor="let type of availableOffenses" [ngValue]="type.id" >{{ type.details }} &nbsp;&nbsp;&nbsp;{{type.name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <a [routerLink]="['/offenses/create']" class="btn btn-success">
+                                    <i class="fa fa-plus-circle"></i>
+                                    New Offense
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="type">Proposed Penalty</label>
+                                <input readonly matInput ngModel [ngModelOptions]="{standalone: true}" [ngModel]="penalty"  id="type" autocomplete="off" class="form-control">
+                        </div>
+                        <div class="form-group col" style="text-align: end; margin: 0px 50px 0px 0px">
+                            <label class="d-block" for="type">Issue is Closed</label>
+                            <label class="form-check-label" for="confirmed">
+                                <input class="form-check-input" type="checkbox" ngModel [ngModelOptions]="{standalone: true}" [(ngModel)]="form.isClosed" id="confirmed" >
+                                Yes
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comments">Details</label>
+                        <textarea ngModel [ngModelOptions]="{standalone: true}" [(ngModel)]="form.comment" class="form-control" id="comments" placeholder="Comments" autocomplete="off"></textarea>
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a [routerLink]="['/issues']" class="btn btn-light">
+                        Cancel
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
